@@ -1,9 +1,6 @@
 package com.pricing;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ShoppingBasket {
@@ -14,9 +11,15 @@ public class ShoppingBasket {
                 .add(item);
     }
 
-    public Receipt checkout() {
+    public Receipt checkout(List<Discount> discounts) {
+        var savings = discounts.stream()
+                .map(discount -> discount.apply(this.basket))
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
+
         var allItems = basket.values().stream().flatMap(List::stream)
                 .collect(Collectors.toList());
-        return new Receipt(allItems, new ArrayList<>());
+
+        return new Receipt(allItems, savings);
     }
 }

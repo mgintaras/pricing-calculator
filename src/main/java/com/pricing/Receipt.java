@@ -1,6 +1,7 @@
 package com.pricing;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 public class Receipt {
@@ -23,16 +24,19 @@ public class Receipt {
     public BigDecimal subTotal() {
         return items.stream()
                 .map(Item::getPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .setScale(2, RoundingMode.HALF_UP);
     }
 
     public BigDecimal totalSavings() {
         return savings.stream()
                 .map(Savings::getAmount)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .setScale(2, RoundingMode.HALF_UP);
     }
 
     public BigDecimal totalPay() {
-        return this.subTotal().subtract(this.totalSavings());
+        return this.subTotal().subtract(this.totalSavings())
+                .setScale(2, RoundingMode.HALF_UP);
     }
 }
