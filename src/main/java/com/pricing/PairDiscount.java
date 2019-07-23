@@ -24,18 +24,25 @@ public class PairDiscount implements Discount {
     public List<Savings> apply(Map<String, List<Item>> basket) {
         var items = basket.get(itemName);
 
-        if (items == null || items.size() < pairSize) {
+        if (hasNotEnoughItems(items, pairSize)) {
             return Collections.emptyList();
         }
 
         var itemPrice = items.get(0).getPrice();
-        int itemCount = items.size();
-        int pairCount = itemCount / this.pairSize;
+        int pairCount = items.size() / this.pairSize;
 
+        return applyDiscount(itemPrice, pairCount);
+    }
+
+    private boolean hasNotEnoughItems(List<Item> items, int pairSize) {
+        return items == null || items.size() < pairSize;
+    }
+
+    private List<Savings> applyDiscount(BigDecimal itemPrice, int pairCount) {
         List<Savings> savings = new ArrayList<>();
 
         for (int i = 0; i < pairCount; i++) {
-            savings.add(new Savings(name, amountCalculator.apply(itemPrice)));
+            savings.add(new Savings(name, this.amountCalculator.apply(itemPrice)));
         }
 
         return savings;
