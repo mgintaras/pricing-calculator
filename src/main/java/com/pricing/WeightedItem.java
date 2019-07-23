@@ -4,12 +4,12 @@ import java.math.BigDecimal;
 
 public class WeightedItem implements Item {
     private final String name;
-    private final BigDecimal weightPerKg;
+    private final BigDecimal weightInKg;
     private final BigDecimal pricePerKg;
 
-    public WeightedItem(String name, BigDecimal weightPerKg, BigDecimal pricePerKg) {
+    public WeightedItem(String name, BigDecimal weightInKg, BigDecimal pricePerKg) {
         this.name = name;
-        this.weightPerKg = weightPerKg;
+        this.weightInKg = weightInKg;
         this.pricePerKg = pricePerKg;
     }
 
@@ -18,6 +18,6 @@ public class WeightedItem implements Item {
     }
 
     public BigDecimal getPrice() {
-        return this.weightPerKg.multiply(this.pricePerKg);
+        return this.weightInKg.multiply(this.pricePerKg);
     }
 }
