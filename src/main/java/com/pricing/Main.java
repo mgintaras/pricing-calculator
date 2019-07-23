@@ -21,7 +21,23 @@ public class Main {
 
         var receipt = basket.checkout(List.of(beanDiscount, cokeDiscount));
 
-        System.out.println("Test");
+        printReceipt(receipt);
+    }
 
+    private static void printReceipt(Receipt receipt) {
+        receipt.getItems().forEach(item -> {
+            System.out.println(String.format("%s                %s", item.getName(), item.getPrice()));
+        });
+        System.out.println("-----------------------");
+        System.out.println(String.format("Sub-total                %s",  receipt.subTotal()));
+        System.out.println();
+        System.out.println("Savings");
+        receipt.getSavings().forEach(savings -> {
+            System.out.println(String.format("%s                -%s", savings.getName(), savings.getAmount()));
+        });
+        System.out.println("-----------------------");
+        System.out.println(String.format("Total savings                -%s",  receipt.totalSavings()));
+        System.out.println("-----------------------");
+        System.out.println(String.format("Total to Pay                %s",  receipt.totalPay()));
     }
 }
