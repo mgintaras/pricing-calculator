@@ -3,6 +3,7 @@ package com.pricing;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,14 +19,14 @@ class ReceiptTest {
                 List.of(new Savings("Random discount", BigDecimal.ONE))
         );
 
-        assertEquals(new BigDecimal(15.5), receipt.subTotal());
+        assertEquals(new BigDecimal(15.5).setScale(2, RoundingMode.HALF_UP), receipt.subTotal());
     }
 
     @Test
     void calculateSubTotalWithZeroItems() {
         var receipt = new Receipt(new ArrayList<>(), new ArrayList<>());
 
-        assertEquals(BigDecimal.ZERO, receipt.subTotal());
+        assertEquals(BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP), receipt.subTotal());
     }
 
     @Test
@@ -37,7 +38,7 @@ class ReceiptTest {
                         new Savings("Another random Discount", BigDecimal.ONE))
         );
 
-        assertEquals(new BigDecimal(2), receipt.totalSavings());
+        assertEquals(new BigDecimal(2).setScale(2, RoundingMode.HALF_UP), receipt.totalSavings());
     }
 
     @Test
@@ -49,6 +50,6 @@ class ReceiptTest {
                         new Savings("Another random Discount", BigDecimal.ONE))
         );
 
-        assertEquals(new BigDecimal(13.5), receipt.totalPay());
+        assertEquals(new BigDecimal(13.5).setScale(2, RoundingMode.HALF_UP), receipt.totalPay());
     }
 }
